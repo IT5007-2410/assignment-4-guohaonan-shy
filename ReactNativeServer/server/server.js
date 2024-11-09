@@ -5,7 +5,7 @@ const { GraphQLScalarType } = require('graphql');
 const { Kind } = require('graphql/language');
 const { MongoClient } = require('mongodb');
 
-const url = 'mongodb://localhost/issuetracker';
+// const url = 'mongodb://localhost/issuetracker';
 
 // Atlas URL  - replace UUU with user, PPP with password, XXX with hostname
 // const url = 'mongodb+srv://UUU:PPP@cluster0-XXX.mongodb.net/issuetracker?retryWrites=true';
@@ -96,10 +96,22 @@ async function issueAdd(_, { issue }) {
 }
 
 async function connectToDb() {
+  const url = process.env.MONGO_URL; 
+  const retryInterval = 5000;
   const client = new MongoClient(url, { useNewUrlParser: true });
-  await client.connect();
-  console.log('Connected to MongoDB at', url);
-  db = client.db();
+  let connected = false;
+  
+  while (!connected) {
+    try {
+      await client.connect();
+      console.log('Connected to MongoDB at', url);
+      db = client.db(); // Set your db object here
+      connected = true; // Break out of the loop if connection is successful
+    } catch (error) {
+      console.log('MongoDB connection failed, retrying...');
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+  }
 }
 
 const server = new ApolloServer({

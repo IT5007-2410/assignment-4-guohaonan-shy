@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+
+  app:
+    build: .
+    container_name: server
+    environment:
+      - MONGO_URL=mongodb://trackerdb:27017/issuetracker 
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+    volumes:
+      - ./src/App.jsx:/app/src/App.jsx
+
+  mongodb:
+    image: mongo:6.0
+    container_name: trackerdb
+    environment:
+      MONGO_INITDB_DATABASE: issuetracker
+    volumes:
+      - ./scripts/init.mongo.js:/docker-entrypoint-initdb.d/init.mongo.js
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
