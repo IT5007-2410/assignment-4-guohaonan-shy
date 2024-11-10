@@ -207,23 +207,34 @@ export default class IssueList extends React.Component {
     
     
     render() {
-    return (
-    <>
-    {/****** Q1: Start Coding here. ******/}
-    {/****** Q1: Code ends here ******/}
-
-
-    {/****** Q2: Start Coding here. ******/}
-    {/****** Q2: Code ends here ******/}
-
-    
-    {/****** Q3: Start Coding here. ******/}
-    {/****** Q3: Code Ends here. ******/}
-
-    {/****** Q4: Start Coding here. ******/}
-    {/****** Q4: Code Ends here. ******/}
-    </>
-      
-    );
-  }
+      return (
+          <NavigationContainer>
+              <Tab.Navigator initialRouteName="IssueTable"
+              screenOptions={({ route }) => ({
+                  tabBarIcon: ({ color, size }) => {
+                      let iconName;
+                      if (route.name === 'IssueTable') {
+                          iconName = 'list';
+                      } else if (route.name === 'IssueFilter') {
+                          iconName = 'filter';
+                      } else if (route.name === 'IssueAdd') {
+                          iconName = 'add-circle';
+                      } else if (route.name === 'AddBlackList') {
+                          iconName = 'add-circle';
+                      }
+                      return <Icon name={iconName} size={size} color={color} />;
+                  },
+                  tabBarActiveTintColor: 'tomato',
+                  tabBarInactiveTintColor: 'gray',
+                  })}
+              >
+              <Tab.Screen name="IssueTable" options={{ title: 'Issue Table' }}>
+                  {props => <IssueTable {...props} issues={this.state.issues}/>}
+              </Tab.Screen>
+              <Tab.Screen name="IssueFilter" component={IssueFilter}>
+              </Tab.Screen>
+            </Tab.Navigator>
+          </NavigationContainer>
+  );
+}
 }
