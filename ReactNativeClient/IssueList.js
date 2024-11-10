@@ -116,31 +116,32 @@ function IssueTable(props) {
 }
 
   
-  class IssueAdd extends React.Component {
-    constructor() {
-      super();
-      this.handleSubmit = this.handleSubmit.bind(this);
-      /****** Q3: Start Coding here. Create State to hold inputs******/
-      /****** Q3: Code Ends here. ******/
-    }
-  
-    /****** Q3: Start Coding here. Add functions to hold/set state input based on changes in TextInput******/
+class IssueAdd extends React.Component {
+  constructor() {
+    super();
+    this.handleSubmit = this.handleSubmit.bind(this);
+    /****** Q3: Start Coding here. Create State to hold inputs******/
+    this.state = { owner: '', title: '', effort: '' };
     /****** Q3: Code Ends here. ******/
-    
-    handleSubmit() {
-      /****** Q3: Start Coding here. Create an issue from state variables and call createIssue. Also, clear input field in front-end******/
-      /****** Q3: Code Ends here. ******/
-    }
-  
-    render() {
-      return (
-          <View>
-          {/****** Q3: Start Coding here. Create TextInput field, populate state variables. Create a submit button, and on submit, trigger handleSubmit.*******/}
-          {/****** Q3: Code Ends here. ******/}
-          </View>
-      );
-    }
   }
+
+  /****** Q3: Start Coding here. Add functions to hold/set state input based on changes in TextInput******/
+  /****** Q3: Code Ends here. ******/
+  
+  handleSubmit() {
+    /****** Q3: Start Coding here. Create an issue from state variables and call createIssue. Also, clear input field in front-end******/
+    const { owner, title, effort } = this.state;
+        const issue = {
+          owner,
+          title,
+          effort: parseInt(effort, 10),
+          due: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10),
+        };
+        this.props.createIssue(issue);
+        this.setState({ owner: '', title: '', effort: '' });
+    /****** Q3: Code Ends here. ******/
+  }
+}
 
 class BlackList extends React.Component {
     constructor()
@@ -232,6 +233,9 @@ export default class IssueList extends React.Component {
                   {props => <IssueTable {...props} issues={this.state.issues}/>}
               </Tab.Screen>
               <Tab.Screen name="IssueFilter" component={IssueFilter}>
+              </Tab.Screen>
+              <Tab.Screen name="IssueAdd"  options={{ title: 'Add Issue' }}>
+                  {props => (<IssueAdd {...props} createIssue={this.createIssue}/>)}
               </Tab.Screen>
             </Tab.Navigator>
           </NavigationContainer>
