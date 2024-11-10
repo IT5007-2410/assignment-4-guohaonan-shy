@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import IssueList from './IssueList.js';
+import IssueList from './IssueList.tsx';
 import type {Node} from 'react';
 import {
   SafeAreaView,
@@ -28,7 +28,6 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 
-
 export default class App extends React.Component
 {
   render()
@@ -36,7 +35,7 @@ export default class App extends React.Component
     return(
     <>
       <Text>Issue Tracker</Text>
-      <IssueList/>
+      <IssueList />
     </>);
 
   }
