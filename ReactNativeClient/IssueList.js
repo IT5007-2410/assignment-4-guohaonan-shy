@@ -58,47 +58,62 @@ class IssueFilter extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
-  header: { height: 50, backgroundColor: '#537791' },
-  text: { textAlign: 'center' },
-  dataWrapper: { marginTop: -1 },
-  row: { height: 40, backgroundColor: '#E7E6E1' }
-  });
+  container: {
+    padding: 10,
+  },
+  header: {
+    flexDirection: 'row',
+    backgroundColor: '#3b5998',
+    paddingVertical: 8,
+  },
+  headerCell: {
+    flex: 1, // Each cell takes equal space
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
+  },
+  row: {
+    flexDirection: 'row',
+    backgroundColor: '#f9f9f9',
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderColor: '#ddd',
+  },
+  cell: {
+    flex: 1, // Adjust this for equal spacing
+    textAlign: 'center',
+  },
+});
 
 const width= [40,80,80,80,80,80,200];
 
-function IssueRow(props) {
-    const issue = props.issue;
-    {/****** Q2: Coding Starts here. Create a row of data in a variable******/}
-    {/****** Q2: Coding Ends here.******/}
-    return (
-      <>
-      {/****** Q2: Start Coding here. Add Logic to render a row  ******/}
-      
-      {/****** Q2: Coding Ends here. ******/}  
-      </>
-    );
-  }
+function IssueTable(props) {
+  const issueRows = props.issues.map(issue =>
+    <IssueRow key={issue.id} issue={issue} />
+  );
+
+  {/****** Q2: Start Coding here. Add Logic to initalize table header  ******/}
+  const renderTableHeader = () => (
+      <View style={styles.header}>
+        <Text style={styles.headerCell}>ID</Text>
+        <Text style={styles.headerCell}>Status</Text>
+        <Text style={styles.headerCell}>Owner</Text>
+        <Text style={styles.headerCell}>Created</Text>
+        <Text style={styles.headerCell}>Effort</Text>
+        <Text style={styles.headerCell}>Due Date</Text>
+        <Text style={styles.headerCell}>Title</Text>
+      </View>
+  );
+  {/****** Q2: Coding Ends here. ******/}
   
   
-  function IssueTable(props) {
-    const issueRows = props.issues.map(issue =>
-      <IssueRow key={issue.id} issue={issue} />
+  return (
+      <View style={styles.container}>
+        {renderTableHeader()}
+        {issueRows}
+      </View>
     );
-
-    {/****** Q2: Start Coding here. Add Logic to initalize table header  ******/}
-
-    {/****** Q2: Coding Ends here. ******/}
-    
-    
-    return (
-    <View style={styles.container}>
-    {/****** Q2: Start Coding here to render the table header/rows.**********/}
-    
-    {/****** Q2: Coding Ends here. ******/}
-    </View>
-    );
-  }
+}
 
   
   class IssueAdd extends React.Component {
