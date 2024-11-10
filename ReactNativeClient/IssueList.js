@@ -144,28 +144,43 @@ class IssueAdd extends React.Component {
 }
 
 class BlackList extends React.Component {
-    constructor()
-    {   super();
-        this.handleSubmit = this.handleSubmit.bind(this);
-        /****** Q4: Start Coding here. Create State to hold inputs******/
-        /****** Q4: Code Ends here. ******/
-    }
-    /****** Q4: Start Coding here. Add functions to hold/set state input based on changes in TextInput******/
-    /****** Q4: Code Ends here. ******/
+  constructor()
+  {   super();
+      this.handleSubmit = this.handleSubmit.bind(this);
+      /****** Q4: Start Coding here. Create State to hold inputs******/
+      this.state = { owner: ''};
+      /****** Q4: Code Ends here. ******/
+  }
+  /****** Q4: Start Coding here. Add functions to hold/set state input based on changes in TextInput******/
+  /****** Q4: Code Ends here. ******/
 
-    async handleSubmit() {
-    /****** Q4: Start Coding here. Create an issue from state variables and issue a query. Also, clear input field in front-end******/
-    /****** Q4: Code Ends here. ******/
-    }
+  async handleSubmit() {
+  /****** Q4: Start Coding here. Create an issue from state variables and issue a query. Also, clear input field in front-end******/
+      const { owner } = this.state;
+      const blackRecord = {
+          owner,
+      };
+      console.log("record:", blackRecord);
+      this.props.block(blackRecord);
+      this.setState({ owner: '' });
+  /****** Q4: Code Ends here. ******/
+  }
 
-    render() {
-    return (
-        <View>
-        {/****** Q4: Start Coding here. Create TextInput field, populate state variables. Create a submit button, and on submit, trigger handleSubmit.*******/}
-        {/****** Q4: Code Ends here. ******/}
-        </View>
-    );
-    }
+  render() {
+  return (
+      <View>
+      {/****** Q4: Start Coding here. Create TextInput field, populate state variables. Create a submit button, and on submit, trigger handleSubmit.*******/}
+      <TextInput
+        style={styles.input}
+        placeholder="Owner"
+        value={this.state.owner}
+        onChangeText={(text) => this.setState({ owner: text })}
+      />
+      <Button title="Add" onPress={this.handleSubmit} />
+      {/****** Q4: Code Ends here. ******/}
+      </View>
+      );
+  }
 }
 
 export default class IssueList extends React.Component {
@@ -194,17 +209,29 @@ export default class IssueList extends React.Component {
     }
 
     async createIssue(issue) {
-    const query = `mutation issueAdd($issue: IssueInputs!) {
-        issueAdd(issue: $issue) {
-        id
-        }
-    }`;
+      const query = `mutation issueAdd($issue: IssueInputs!) {
+          issueAdd(issue: $issue) {
+          id
+          }
+      }`;
 
-    const data = await graphQLFetch(query, { issue });
-    if (data) {
-        this.loadData();
+      const data = await graphQLFetch(query, { issue });
+      if (data) {
+          this.loadData();
+      }
     }
-    }
+
+    async addInBlacklist(record) {
+      const query = `mutation addToBlacklist($owner: String!) {
+            addToBlacklist(nameInput: $owner)
+      }`;
+
+
+      const data = await graphQLFetch(query, {owner: record.owner});
+        if (data) {
+              this.loadData();
+       }
+   }
     
     
     render() {
@@ -236,6 +263,9 @@ export default class IssueList extends React.Component {
               </Tab.Screen>
               <Tab.Screen name="IssueAdd"  options={{ title: 'Add Issue' }}>
                   {props => (<IssueAdd {...props} createIssue={this.createIssue}/>)}
+              </Tab.Screen>
+              <Tab.Screen name="AddBlackList"  options={{ title: 'Block' }}>
+                  {props => (<BlackList {...props} block={this.addInBlacklist}/>)}
               </Tab.Screen>
             </Tab.Navigator>
           </NavigationContainer>
