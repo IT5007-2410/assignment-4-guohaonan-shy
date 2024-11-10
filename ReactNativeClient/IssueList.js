@@ -50,11 +50,9 @@ import {
 class IssueFilter extends React.Component {
     render() {
       return (
-        <>
-        {/****** Q1: Start Coding here. ******/}
-
-        {/****** Q1: Code ends here ******/}
-        </>
+        <View style={styles.placeholder}>
+          <Text>This is a placeholder for the issue filter.</Text>
+        </View>
       );
     }
 }
